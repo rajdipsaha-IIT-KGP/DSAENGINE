@@ -2,18 +2,16 @@ import { useRef, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
-
+import { Route, Routes , Link } from 'react-router-dom';
 import Menu from './Components/Menu';
 import User from './Components/User';
-
 import About from './Pages/About';
 import Practice from './Pages/Practice';
 import Roadmap from './Pages/Roadmap';
 import Signup from './Pages/Signup';
 import Signin from './Pages/Signin';
 import Logout from './Pages/Logout';
-
+import Startpage from './Components/Startpage';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -76,7 +74,7 @@ function App() {
                 <h1>DSA Engine</h1>
                 <h3>Your all-in-one platform for mastering Data Structures and Algorithms</h3>
                 <div className="buttons">
-                  <button className="btn-primary">Get Started</button>
+               <Link to="/getstarted"><button className="btn-primary">Get Started</button></Link>   
                   <button className="btn-secondary">Learn More</button>
                 </div>
               </>
@@ -88,6 +86,8 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/getstarted" element={<Startpage />} />
+        
           <Route path="*" element={<h2 style={{ textAlign: 'center', color: 'red' }}>404 - Page Not Found</h2>} />
         </Routes>
       </div>

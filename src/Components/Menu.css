@@ -1,0 +1,71 @@
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  display: flex;
+}
+
+.menu-panel {
+  background: rgba(255, 255, 255, 0.08); /* transparent glass effect */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px); /* for Safari */
+  border-right: 1px solid rgba(255, 255, 255, 0.15); /* soft edge */
+  box-shadow: 5px 0 20px rgba(0, 0, 0, 0.3);
+
+  width: 200px;
+  height: 100%;
+  padding: 2rem 1.5rem;
+
+  animation: slideIn 0.3s ease-out forwards;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-list li {
+  margin-bottom: 1.5rem;
+}
+
+.menu-list a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  padding: 0.25rem 0;
+  display: inline-block;
+  border-bottom: 1px solid transparent;
+}
+
+.menu-list a:hover {
+  color: #a855f7; /* violet glow */
+  border-bottom: 1px solid #a855f7;
+  transform: translateX(5px);
+}
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.menu-panel {
+  animation: slideIn 0.4s ease-out forwards;
+}

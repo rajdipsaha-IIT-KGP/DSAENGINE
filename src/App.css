@@ -1,0 +1,143 @@
+/* App.css */
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #0f0c29;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.app-container {
+  position: relative;
+  height: 100vh;
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+/* Glowing animated circle */
+.glow-circle {
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(191, 97, 255, 0.6), transparent 70%);
+  border-radius: 50%;
+  filter: blur(100px);
+  animation: pulse 6s infinite ease-in-out;
+  z-index: 0;
+}
+
+/* Glow animation */
+@keyframes pulse {
+  0% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateX(-50%) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.6;
+  }
+}
+
+.content {
+  z-index: 1;
+}
+
+.content h1 {
+  font-size: 3rem;
+  background: linear-gradient(to right, #7F00FF, #E100FF);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.content h3 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.buttons button {
+  margin: 10px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(to right, #7F00FF, #E100FF);
+  color: white;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid #7F00FF;
+  color: #7F00FF;
+}
+.btn-primary:hover {
+  background: linear-gradient(to right, #E100FF, #7F00FF);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #a855f7;
+  transition: all 0.5s ease-in-out;
+}
+
+.btn-secondary:hover {
+  background: #7F00FF;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #a855f7;
+  transition: all 0.5s ease-in-out;
+}
+/* Position top-left menu button */
+.menu-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 0.8rem;
+  cursor: pointer;
+  z-index: 1100;
+}
+
+.menu-button:hover {
+  color: #a855f7;
+  transform: scale(1.1);
+  transition: all 0.2s ease;
+}
+
+/* Position top-right user button */
+.user-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 90%;
+  color: white;
+  font-size: 0.8rem; /* You had 0.5rem — too small for an icon */
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.user-button:hover {
+  border-color: #a855f7;
+  box-shadow: 0 0 10px #a855f7, 0 0 20px #a855f7;
+  transform: scale(1.1);
+}
+

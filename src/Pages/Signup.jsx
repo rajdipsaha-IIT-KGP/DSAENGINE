@@ -6,7 +6,7 @@ function Signup() {
   return (
     <div className="signup-container">
       <form className="signup-form">
-        <h1>Signup Page</h1>
+        <h1>Sign Up</h1>
 
         <div className="form-group">
           <label htmlFor="username">Username:</label>

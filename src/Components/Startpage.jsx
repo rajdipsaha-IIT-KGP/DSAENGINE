@@ -1,9 +1,11 @@
-import './Startpage.css'; // Import your CSS file for styling
+import './Startpage.css'; 
+import { useNavigate } from 'react-router-dom';
+
 function Startpage() {
   const openInNewTab = (url) => {
     window.open(url, "_blank", "noopener,noreferrer");
   };
-
+  const navigate = useNavigate();
   return (
     <div className="start-container">
       <h1 className="start-title">Welcome to the World Of DSA</h1>
@@ -18,6 +20,7 @@ function Startpage() {
             onClick={() => openInNewTab("https://leetcode.com/")}
           />
           <p>Practice your coding skills on LeetCode.</p>
+          <input type="text" placeholder='Type your handle name' />
           <button className="card-button">Connect Your Profile In LeetCode</button>
         </div>
 
@@ -29,11 +32,15 @@ function Startpage() {
             onClick={() => openInNewTab("https://codeforces.com/")}
           />
           <p>Challenge yourself with Codeforces problems.</p>
+           <input type="text" placeholder='Type your handle name' />
           <button className="card-button">Connect Your Profile In Codeforces</button>
         </div>
       </div>
 
-      
+      <button className="dsa" onClick={() => navigate('/Practice')}>
+        Start Learning And Practicing DSA
+        <span className="arrow">→</span>
+      </button>
 
     </div>
   );

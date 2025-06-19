@@ -79,3 +79,67 @@
   box-shadow: 0 0 10px #00d8ff;
 }
 
+.dsa {
+  margin-top: 3rem;
+  padding: 0.8rem 1.6rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #00d8ff, #00b2e2);
+  color: black;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 0 10px rgba(0, 216, 255, 0.2);
+}
+
+.dsa:hover {
+  background: #00d8ff;
+  transform: translateY(-3px);
+  box-shadow: 0 0 15px #00d8ff;
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.dsa:hover .arrow {
+  transform: translateX(6px);
+}
+.card input {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #00d8ff;
+  outline: none;
+  color: white;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  box-sizing: border-box; 
+
+}
+
+
+.card input::placeholder {
+  color: #ccc;
+  transition: color 0.3s ease;
+}
+
+.card input:focus {
+  background: white;
+  color: black;
+  border-radius: 8px;
+  border: none;
+  padding: 0.6rem 0.8rem;
+  box-shadow: 0 0 10px #00d8ff;
+}
+
+.card input:focus::placeholder {
+  color: #888;
+}

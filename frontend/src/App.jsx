@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
-import { Route, Routes , Link } from 'react-router-dom';
+import { Route, Routes, Link, useLocation } from 'react-router-dom';
 import Menu from './Components/Menu';
 import User from './Components/User';
 import About from './Pages/About';
@@ -12,6 +12,7 @@ import Signup from './Pages/Signup';
 import Signin from './Pages/Signin';
 import Logout from './Pages/Logout';
 import Startpage from './Components/Startpage';
+import LoadingBar from 'react-top-loading-bar';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,13 +20,21 @@ function App() {
   const menuRef = useRef(null);
   const userRef = useRef(null);
 
-  const handleMenuToggle = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const loadingBarRef = useRef(null);
+  const location = useLocation(); // Detect route changes
 
-  const handleUserToggle = () => {
-    setIsUserOpen(!isUserOpen);
-  };
+  useEffect(() => {
+    // Start and complete the loading bar on route change
+    loadingBarRef.current?.continuousStart();
+    const timer = setTimeout(() => {
+      loadingBarRef.current?.complete();
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [location]);
+
+  const handleMenuToggle = () => setIsMenuOpen(!isMenuOpen);
+  const handleUserToggle = () => setIsUserOpen(!isUserOpen);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -48,6 +57,9 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* Top Loader */}
+      <LoadingBar color="#3b82f6" ref={loadingBarRef} height={3} />
+
       {/* Menu Button */}
       <button className="menu-button" onClick={handleMenuToggle}>
         <FontAwesomeIcon icon={faBars} size="2x" />
@@ -64,7 +76,7 @@ function App() {
       {isMenuOpen && <div><Menu ref={menuRef} /></div>}
       {isUserOpen && <div><User ref={userRef} /></div>}
 
-      {/* All Routes in One Place */}
+      {/* Routes */}
       <div className="content">
         <Routes>
           <Route
@@ -74,7 +86,7 @@ function App() {
                 <h1>DSA Engine</h1>
                 <h3>Your all-in-one platform for mastering Data Structures and Algorithms</h3>
                 <div className="buttons">
-               <Link to="/getstarted"><button className="btn-primary">Get Started</button></Link>   
+                  <Link to="/getstarted"><button className="btn-primary">Get Started</button></Link>
                   <button className="btn-secondary">Learn More</button>
                 </div>
               </>
@@ -87,7 +99,6 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/getstarted" element={<Startpage />} />
-        
           <Route path="*" element={<h2 style={{ textAlign: 'center', color: 'red' }}>404 - Page Not Found</h2>} />
         </Routes>
       </div>

@@ -1,0 +1,59 @@
+.practice-container {
+  padding: 2rem;
+  min-height: 100vh;
+  color: white; /* Assuming linear background is dark */
+}
+
+.practice-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #00d8ff;
+}
+
+.practice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.topic-card {
+  background: rgba(255, 255, 255, 0.05); /* Slight glassmorphism effect */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 216, 255, 0.1);
+}
+
+.topic-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px #00d8ff;
+}
+
+.topic-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.topic-buttons button {
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #00d8ff, #00b2e2);
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.topic-buttons button:hover {
+  background: #00d8ff;
+  box-shadow: 0 0 10px #00d8ff;
+}

@@ -1,10 +1,32 @@
 import './Startpage.css'; 
 import { useNavigate } from 'react-router-dom';
-
+import { ToastContainer, toast } from 'react-toastify';
+import { useState } from 'react';
 function Startpage() {
   const openInNewTab = (url) => {
     window.open(url, "_blank", "noopener,noreferrer");
   };
+  async function handleConnectCodeforces() {
+    if(!handleName) {
+      toast.error("Please enter your Codeforces handle name");
+      return;
+    }
+    try{
+         const res = await fetch(`https://codeforces.com/api/user.info?handles=${handleName}`);
+         const data = await res.json();
+         if(data.status === "OK") {
+           toast.success(`Connected to Codeforces profile: ${data.result[0].handle}`);
+         }
+          else {
+            toast.error("Failed to connect to Codeforces profile. Please check your handle name.");
+          }
+        }
+    catch (error) {
+      console.error("Error connecting to Codeforces:", error);
+      toast.error("An error occurred while connecting to Codeforces");
+    }
+  }
+  const [handleName, setHandleName] = useState('');
   const navigate = useNavigate();
   return (
     <div className="start-container">
@@ -32,8 +54,11 @@ function Startpage() {
             onClick={() => openInNewTab("https://codeforces.com/")}
           />
           <p>Challenge yourself with Codeforces problems.</p>
-           <input type="text" placeholder='Type your handle name' />
-          <button className="card-button">Connect Your Profile In Codeforces</button>
+           <input type="text" placeholder='Type your handle name' value={handleName}
+           onChange={(event)=>{
+            setHandleName(event.target.value);
+           }}/>
+          <button className="card-button" onClick={handleConnectCodeforces}>Connect Your Profile In Codeforces</button>
         </div>
       </div>
 
@@ -42,6 +67,7 @@ function Startpage() {
         <span className="arrow">→</span>
       </button>
 
+      <ToastContainer position="top-center" />
     </div>
   );
 }

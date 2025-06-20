@@ -1,18 +1,30 @@
+import './Logout.css';
+import { ToastContainer, toast } from 'react-toastify';
 function Logout() {
-    // This component handles the logout functionality
-    // It can be expanded to include API calls or state management as needed
+  const handleLogout = () => {
+   if(!check()) 
+    return
+   toast.success("You have successfully logged out 🎉");
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+  };
+function  check() {
+    if (!localStorage.getItem('token')) {
+      toast.error("You are not logged in");
+      return false;
+    }
+    else return true;
+  }
+  return (
     
-    const handleLogout = () => {
-        // Logic for logging out the user, e.g., clearing tokens, redirecting, etc.
-        console.log("User logged out");
-        // Redirect to home or login page if necessary
-    };
-    
-    return (
-        <div className="logout-container">
-        <h2>Logout</h2>
-        <button onClick={handleLogout}>Confirm Logout</button>
-        </div>
-    );
+    <div className="logout-container">
+      <h2 className="logout-title">Are you sure you want to logout?</h2>
+   
+      <button className="logout-button" onClick={handleLogout}>Confirm Logout</button>
+      <ToastContainer position="top-center" />
+    </div>
+  );
 }
+
 export default Logout;

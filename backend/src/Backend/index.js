@@ -54,30 +54,41 @@ app.post('/signup', async function (req, res) {
 });
 
 //signin route
-app.post('/signin',async function(req,res){
-    const{email,password,username} = req.body;
-    if (!email || !password || !username) {
-        return res.status(400).json({ message: "All fields are required" });
+app.post('/signin', async function (req, res) {
+  const { email, password, username } = req.body;
+  if (!email || !password || !username) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  try {
+    const user = await UserModel.findOne({ email: email });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
     }
-    try{
-        const user = await UserModel.findOne({email: email});
-    if(!user){
-        return res.status(400).json({message: "User not found"});
-    }
+
     const isValidPass = await bcrypt.compare(password, user.password);
-    if(!isValidPass){
-        return res.status(400).json({message: "Invalid password"});
+    if (!isValidPass) {
+      return res.status(400).json({ message: "Invalid password" });
     }
-    else{
-         const token = jwt.sign({ id: user._id.toString() }, JWT_SECRET, { expiresIn: '1h' })
-    }
-    return res.json({message: "User signed in successfully", token: token});
-    }
-    catch(err){
-        console.error("Error signing in:", err);
-        return res.status(500).json({message: "Internal server error"});
-    }
-})
+
+    // ✅ Declare and assign token here
+    const token = jwt.sign({ id: user._id.toString() }, JWT_SECRET, { expiresIn: '1h' });
+
+    return res.json({
+      message: "User signed in successfully",
+      token: token,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email
+      }
+    });
+  } catch (err) {
+    console.error("Error signing in:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 app.listen(3000, function(){
     console.log("Server started on port 3000");
 });

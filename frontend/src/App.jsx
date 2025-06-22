@@ -13,7 +13,8 @@ import Signin from './Pages/Signin';
 import Logout from './Pages/Logout';
 import Startpage from './Components/Startpage';
 import LoadingBar from 'react-top-loading-bar';
-
+import CodeforcesStatus from './Pages/CodeforcesStatus';
+import CodeforcesProblems from './Pages/CodeforcesProblems';
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserOpen, setIsUserOpen] = useState(false);
@@ -99,7 +100,9 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/getstarted" element={<Startpage />} />
-          <Route path="*" element={<h2 style={{ textAlign: 'center', color: 'red' }}>404 - Page Not Found</h2>} />
+          <Route path="/codeforces/:handle" element={<CodeforcesStatus />} />
+          <Route path="/codeforcesproblems" element={<CodeforcesProblems />} />
+
         </Routes>
       </div>
     </div>

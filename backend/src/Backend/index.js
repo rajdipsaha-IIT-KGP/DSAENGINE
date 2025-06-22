@@ -1,17 +1,27 @@
 const express = require('express');
+const cors = require('cors');
 let app = express();
+
+app.use(cors()); // ✅ FIRST: enable CORS before routes
+app.use(express.json()); // ✅ parse JSON before routes
+
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'secretkey123';
 const mongoose = require('mongoose');
-const cors = require('cors');
 const bcrypt = require('bcrypt');
-const {UserModel} = require('./db');
+
+const { UserModel } = require('./db');
+const cfRoute = require('./codeforces');
+
+// ✅ Mount route after cors and json middleware
+app.use('/api/codeforces', cfRoute);
+
+// ✅ MongoDB connect
 mongoose.connect('mongodb+srv://rajdipsaha7697:Rajdip%402006@rajdip.r4ziwjt.mongodb.net/DSAENGINE_DATABASE')
-.then(() => console.log("Connected to MongoDB"))
+  .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.error("MongoDB connection error:", err));
-app.use(cors()); 
-app.use(express.json());
-//signup route
+
+// ✅ Signup Route
 app.post('/signup', async function (req, res) {
   const { username, email, password } = req.body;
 
@@ -26,14 +36,11 @@ app.post('/signup', async function (req, res) {
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
-
     const newUser = await UserModel.create({
       username,
       email,
       password: passwordHash,
     });
-
-    console.log("New user created:", newUser);
 
     const token = jwt.sign({ id: newUser._id }, JWT_SECRET, { expiresIn: '1h' });
 
@@ -53,9 +60,10 @@ app.post('/signup', async function (req, res) {
   }
 });
 
-//signin route
+// ✅ Signin Route
 app.post('/signin', async function (req, res) {
   const { email, password, username } = req.body;
+
   if (!email || !password || !username) {
     return res.status(400).json({ message: "All fields are required" });
   }
@@ -71,7 +79,6 @@ app.post('/signin', async function (req, res) {
       return res.status(400).json({ message: "Invalid password" });
     }
 
-    // ✅ Declare and assign token here
     const token = jwt.sign({ id: user._id.toString() }, JWT_SECRET, { expiresIn: '1h' });
 
     return res.json({
@@ -89,6 +96,7 @@ app.post('/signin', async function (req, res) {
   }
 });
 
-app.listen(3000, function(){
-    console.log("Server started on port 3000");
+// ✅ Start Server
+app.listen(3000, function () {
+  console.log("Server started on port 3000");
 });

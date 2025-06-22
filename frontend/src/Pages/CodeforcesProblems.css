@@ -1,0 +1,162 @@
+/* CodeforcesProblems.css */
+.cf-container {
+  padding: 2rem;
+  color: white;
+  width: 100%;
+  min-height: 100vh;
+  background-color: transparent; /* Use inherited glow */
+}
+
+.cf-title {
+    font-size: 3rem;
+  background: linear-gradient(to right, #7F00FF, #E100FF);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@keyframes pulseText {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.cf-filters {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.cf-search {
+  width: 300px;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: white;
+  border: 1px solid #38bdf8;
+  transition: all 0.3s ease;
+}
+
+.cf-search:focus {
+  box-shadow: 0 0 10px #38bdf8;
+  transform: scale(1.02);
+}
+
+.cf-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(6px);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.cf-table th,
+.cf-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #334155;
+  color: #e2e8f0;
+  transition: color 0.3s ease;
+}
+
+.cf-row {
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.cf-row:hover {
+  background-color: rgba(30, 41, 59, 0.4);
+  transform: scale(1.01);
+}
+
+.cf-row-attempted td {
+  color: #34d399;
+  font-weight: bold;
+  animation: glowText 1.8s infinite ease-in-out;
+}
+
+@keyframes glowText {
+  0% {
+    text-shadow: 0 0 5px #34d399, 0 0 10px #34d399;
+  }
+  50% {
+    text-shadow: 0 0 10px #10b981, 0 0 20px #10b981;
+  }
+  100% {
+    text-shadow: 0 0 5px #34d399, 0 0 10px #34d399;
+  }
+}
+
+.cf-table a {
+  text-decoration: none;
+  color: #3b82f6;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.cf-table a:hover {
+  color: #60a5fa;
+  text-shadow: 0 0 8px #3b82f6;
+}
+/* Difficulty Card Section */
+.cf-info-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin: 1rem auto 2rem;
+  max-width: 800px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #e2e8f0;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 10px rgba(0, 216, 255, 0.1);
+}
+
+.cf-difficulty-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.tag {
+  padding: 0.3rem 0.8rem;
+  border-radius: 10px;
+  font-weight: bold;
+  color: white;
+  font-size: 0.85rem;
+}
+
+.tag.beginner {
+  background-color: #22d3ee; /* cyan */
+}
+.tag.easy {
+  background-color: #10b981; /* green */
+}
+.tag.lowermid {
+  background-color: #4ade80; /* lime */
+}
+.tag.mid {
+  background-color: #facc15; /* yellow */
+  color: black;
+}
+.tag.uppermid {
+  background-color: #fb923c; /* orange */
+}
+.tag.hard {
+  background-color: #ef4444; /* red */
+}
+.tag.veryhard {
+  background-color: #a855f7; /* violet */
+}
+
+.cf-note-small {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #cbd5e1;
+}

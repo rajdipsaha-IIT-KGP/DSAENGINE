@@ -84,9 +84,11 @@ function Startpage() {
               return;
             }
             // ✅ Pass handleName as state to next page
-          navigate(`/CodeforcesProblems?handle=${handleName}`);
+         navigate(`/CodeforcesProblems?handle=${handleName}`);
 
 
+
+s
           }}
         >
           Browse Problems From Codeforces

@@ -193,33 +193,63 @@
 }
 
 /* Pagination Button - Base */
-.cf-page-btn {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid #334155;
-  color: #e2e8f0; /* MATCHED COLOR */
-  padding: 0.5rem 1rem;
+.cf-pagination-button{
+  padding: 15px;
   border-radius: 8px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: white;
   cursor: pointer;
-  font-size: 1rem;
-  backdrop-filter: blur(6px);
-  transition: all 0.2s ease-in-out;
-}
+  transition: all 0.3s ease;
+   font-weight: 900;         
+  font-size: 1rem;           
+  letter-spacing: 0.5px;     
+  text-transform: uppercase; 
+  animation: glowPulse 2s infinite ease-in-out;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 
-/* Hover Effect */
-.cf-page-btn:hover {
-  background-color: rgba(56, 189, 248, 0.1);
-  border-color: #38bdf8;
-  color: #38bdf8;
-  transform: scale(1.05);
-  box-shadow: 0 0 8px #38bdf8;
 }
-
-/* Active Page Button */
-.cf-page-btn.active {
-  background-color: rgba(56, 189, 248, 0.15);
-  color: #38bdf8;
-  border-color: #38bdf8;
+.cf-pagination-button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+}
+.cf-pagination-button:disabled {
+  background-color: rgba(255, 255, 255, 0.03);
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+.cf-pagination-button.active {
+  background-color: #38bdf8;
+  color: white;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+}
+.cf-pagination-button i {
+  margin-right: 0.3rem;
+}
+.cf-pagination-button span {
+  font-size: 0.9rem;
+}
+.cf-pagination-info {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+.cf-pagination-info span {
   font-weight: bold;
-  box-shadow: 0 0 12px #38bdf8;
-  transform: scale(1.08);
+  color: #38bdf8;
+}
+.cf-pagination-info .total {
+  color: #cbd5e1;
+}
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 5px rgba(56, 189, 248, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(56, 189, 248, 0.4);
+  }
 }

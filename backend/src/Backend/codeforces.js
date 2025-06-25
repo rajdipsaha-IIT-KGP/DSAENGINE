@@ -25,7 +25,7 @@ router.get('/userdata/:handle',async function(req, res) {
         name: problem.name,
         rating: problem.rating || 0,
         tags: problem.tags || [],
-        status: solvedSet.has(id) ? "Attempted" : "Not Attempted",
+        status: solvedSet.has(id) ,
         link: `https://codeforces.com/contest/${problem.contestId}/problem/${problem.index}`
       };
    })

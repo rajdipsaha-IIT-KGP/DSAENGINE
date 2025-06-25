@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './CodeforcesProblems.css';
-
-
+import Select from 'react-select';
 function CodeforcesProblems() {
   const [problems, setProblems] = useState([]);
   const [handle, setHandle] = useState('');
@@ -10,70 +9,66 @@ function CodeforcesProblems() {
   const [loading, setLoading] = useState(true);
   const [currpage, setcurrPage] = useState(1);
   const [difficulty, setDifficulty] = useState('');
+  const [tags, settags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [solved, setSolved] = useState('');
   const problemsPerPage = 60;
   const maxPageButtons = 5;
 
   useEffect(() => {
+  const fetchData = async () => {
     const queryParams = new URLSearchParams(window.location.search);
     const cfHandle = queryParams.get('handle');
     setHandle(cfHandle);
 
     if (cfHandle) {
       setLoading(true);
-      axios
-        .get(`http://localhost:3000/api/codeforces/userdata/${cfHandle}`)
-        .then((res) => {
-          setProblems(res.data.problems);
-        })
-        .catch((err) => {
-          console.error("Error fetching problems", err);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      try {
+        const res = await axios.get(`http://localhost:3000/api/codeforces/userdata/${cfHandle}`);
+        setProblems(res.data.problems);
+        const allTags = [...new Set(res.data.problems.flatMap(p => p.tags || []))];
+        settags(allTags);
+      } catch (err) {
+        console.error("Error fetching problems", err);
+      } finally {
+        setLoading(false);
+      }
     }
-  }, []);
+  };
 
-  const filteredProblems = problems.filter((p) =>{
-    const matchedSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase())
-   let rating = p.rating || 0;
-   let matchedDifficulty = false;
-   if(difficulty === 'Beginner' ) {
-     matchedDifficulty = rating >= 800 && rating <= 1000;
-   }
-    else if(difficulty === 'Easy') {
-     matchedDifficulty = rating >= 1100 && rating <= 1300;
-  }
-    else if(difficulty === 'Lower-Mid') {
-      matchedDifficulty = rating >= 1400 && rating <= 1600;
-    }
-    else if(difficulty === 'Mid-Level') {
-      matchedDifficulty = rating >= 1700 && rating <= 1900;
-    }
-    else if(difficulty === 'Upper-Mid') {
-      matchedDifficulty = rating >= 2000 && rating <= 2200;
-    }
-    else if(difficulty === 'Hard') {
-      matchedDifficulty = rating >= 2300 && rating <= 2500;
-    }
-    else if(difficulty === 'Very Hard') {
-      matchedDifficulty = rating >= 2600;
-    }
-    else {
-      matchedDifficulty = true; 
-    }
-    return matchedSearch && matchedDifficulty;
- } );
+  fetchData();
+}, []);
+
+
+  const filteredProblems = problems.filter((p) => {
+    const matchedSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const rating = p.rating || 0;
+    let matchedSolved = true;
+    if (solved === 'solved') matchedSolved = p.solved;
+    else if (solved === 'unsolved') matchedSolved = !p.solved;
+    let matchedDifficulty = true;
+    if (difficulty === 'Beginner') matchedDifficulty = rating >= 800 && rating <= 1000;
+    else if (difficulty === 'Easy') matchedDifficulty = rating >= 1100 && rating <= 1300;
+    else if (difficulty === 'Lower-Mid') matchedDifficulty = rating >= 1400 && rating <= 1600;
+    else if (difficulty === 'Mid-Level') matchedDifficulty = rating >= 1700 && rating <= 1900;
+    else if (difficulty === 'Upper-Mid') matchedDifficulty = rating >= 2000 && rating <= 2200;
+    else if (difficulty === 'Hard') matchedDifficulty = rating >= 2300 && rating <= 2500;
+    else if (difficulty === 'Very Hard') matchedDifficulty = rating >= 2600;
+
+    const matchedTags =
+      selectedTags.length === 0 ||
+      selectedTags.some(tag => (p.tags || []).includes(tag));
+
+    return matchedSearch && matchedDifficulty && matchedTags && matchedSolved;
+  });
 
   const indexOfLastProblem = currpage * problemsPerPage;
   const indexOfFirstProblem = indexOfLastProblem - problemsPerPage;
   const newProblems = filteredProblems.slice(indexOfFirstProblem, indexOfLastProblem);
   const totalPages = Math.ceil(filteredProblems.length / problemsPerPage);
 
-  // Pagination window logic
   let Startpage = Math.max(1, currpage - Math.floor(maxPageButtons / 2));
   let Endpage = Startpage + maxPageButtons - 1;
-
   if (Endpage > totalPages) {
     Endpage = totalPages;
     Startpage = Math.max(1, Endpage - maxPageButtons + 1);
@@ -96,7 +91,7 @@ function CodeforcesProblems() {
     <div className="cf-container">
       <h1 className="cf-title">Codeforces Problems</h1>
 
-      {/* Difficulty card */}
+      {/* Difficulty Explanation */}
       <div className="cf-info-card">
         <h3>Note:</h3>
         <p>Problems are categorized by difficulty based on their rating points:</p>
@@ -109,13 +104,9 @@ function CodeforcesProblems() {
           <span className="tag hard">Hard : 2300 - 2500</span>
           <span className="tag veryhard">Very Hard : 2600+</span>
         </div>
-        <p className="cf-note-small">
-          Recent problems will appear after they are rated. <br />
-          Note: Problems with no tags are automatically filtered out.
-        </p>
       </div>
 
-      {/* Search input */}
+      {/* Filters */}
       <div className="cf-filters">
         <input
           type="text"
@@ -124,12 +115,18 @@ function CodeforcesProblems() {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="cf-search"
         />
-
-        <select id="difficulty" name="difficulty" className="cf-dropdown"
+       <select
+          className="cf-dropdown" id="cf-dropdown cf-solved-dropdown" value = {solved}
+          onChange={(e) => setSolved(e.target.value)}>
+          <option value="">All Problems</option>
+          <option value="solved">Solved Problems</option>
+          <option value="unsolved">Unsolved Problems</option>
+          </select>
+        <select
+          className="cf-dropdown" id="cf-difficulty-dropdown"
           value={difficulty}
-          onChange={(e)=>{
-            setDifficulty(e.target.value);
-          }}>
+          onChange={(e) => setDifficulty(e.target.value)}
+        >
           <option value="">All Difficulties</option>
           <option value="Beginner">Beginner : 800 - 1000</option>
           <option value="Easy">Easy : 1100 - 1300</option>
@@ -139,6 +136,21 @@ function CodeforcesProblems() {
           <option value="Hard">Hard : 2300 - 2500</option>
           <option value="Very Hard">Very Hard : 2600+</option>
         </select>
+
+   <Select
+  isMulti
+  name="tags"
+  options={tags.map(tag => ({ value: tag, label: tag }))}
+  className="cf-tag-select"
+  classNamePrefix="select"
+  value={tags
+    .filter(tag => selectedTags.includes(tag))
+    .map(tag => ({ value: tag, label: tag }))}
+  onChange={(selectedOptions) =>
+    setSelectedTags(selectedOptions.map(option => option.value))
+  }
+/>
+
       </div>
 
       {/* Table */}
@@ -182,35 +194,19 @@ function CodeforcesProblems() {
 
       {/* Pagination */}
       <div className="cf-pagination">
-        <button
-          className="cf-pagination-button"
-          onClick={() => setcurrPage(1)}
-          disabled={currpage === 1}
-        >
+        <button className='cf-pagination-button' onClick={() => setcurrPage(1)} disabled={currpage === 1}>
           First
         </button>
-        <button
-          className="cf-pagination-button"
-          onClick={() => setcurrPage((prev) => Math.max(1, prev - 1))}
-          disabled={currpage === 1}
-        >
+        <button className='cf-pagination-button' onClick={() => setcurrPage(prev => Math.max(1, prev - 1))} disabled={currpage === 1}>
           Previous
         </button>
 
         {paginationButtons}
 
-        <button
-          className="cf-pagination-button"
-          onClick={() => setcurrPage((prev) => Math.min(totalPages, prev + 1))}
-          disabled={currpage === totalPages}
-        >
+        <button className='cf-pagination-button' onClick={() => setcurrPage(prev => Math.min(totalPages, prev + 1))} disabled={currpage === totalPages}>
           Next
         </button>
-        <button
-          className="cf-pagination-button"
-          onClick={() => setcurrPage(totalPages)}
-          disabled={currpage === totalPages}
-        >
+        <button className='cf-pagination-button' onClick={() => setcurrPage(totalPages)} disabled={currpage === totalPages}>
           Last
         </button>
       </div>

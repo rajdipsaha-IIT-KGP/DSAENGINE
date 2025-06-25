@@ -12,24 +12,31 @@ function Startpage() {
   const navigate = useNavigate();
 
   async function handleConnectCodeforces() {
-    if (!handleName) {
-      toast.error("Please enter your Codeforces handle name");
-      return;
+  if (!handleName) {
+    toast.error("Please enter your Codeforces handle name");
+    return;
+  }
+
+  try {
+    const res = await fetch(`https://codeforces.com/api/user.info?handles=${handleName}`);
+    
+    // Check if response is not 200 OK
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
     }
 
-    try {
-      const res = await fetch(`https://codeforces.com/api/user.info?handles=${handleName}`);
-      const data = await res.json();
-      if (data.status === "OK") {
-        toast.success(`Connected to Codeforces profile: ${data.result[0].handle}`);
-      } else {
-        toast.error("Failed to connect to Codeforces profile. Please check your handle name.");
-      }
-    } catch (error) {
-      console.error("Error connecting to Codeforces:", error);
-      toast.error("An error occurred while connecting to Codeforces");
+    const data = await res.json();
+
+    if (data.status === "OK") {
+      toast.success(`Connected to Codeforces profile: ${data.result[0].handle}`);
+    } else {
+      toast.error("Failed to connect to Codeforces profile. Please check your handle name.");
     }
+  } catch (error) {
+    console.error("Error connecting to Codeforces:", error);
+    toast.error("An error occurred while connecting to Codeforces. Please check your internet or handle.");
   }
+}
 
   return (
     <div className="start-container">
